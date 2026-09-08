@@ -22,17 +22,21 @@ jobs:
         shell: bash
         run: |
           zig c++ -target x86_64-windows-gnu -O2 -municode -static \
-              -Wl,--subsystem,windows src/FastPortScan.cpp -o FastPortScan.exe \
-              -lws2_32 -lcomctl32 -liphlpapi -lgdi32 -lshell32 -lgdiplus
+              -Wl,--subsystem,windows \
+              src/main.cpp src/common.cpp src/scan.cpp src/config.cpp src/about.cpp \
+              -o FastPortScan.exe \
+              -lws2_32 -lcomctl32 -liphlpapi -lgdi32 -lshell32
 
       - name: Package
         shell: bash
         run: |
           mkdir -p dist
-          cp FastPortScan.exe assets/logo.png dist/
+          cp FastPortScan.exe assets/logo.ico dist/
+          VERSION="${GITHUB_REF_NAME}"
+          "C:/Program Files/Git/usr/bin/zip.exe" -j "dist/FastPortScan-${VERSION}-x64.zip" FastPortScan.exe assets/logo.ico
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/FastPortScan.exe
+          files: dist/*.zip
           generate_release_notes: true

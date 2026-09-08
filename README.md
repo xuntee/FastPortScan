@@ -1,6 +1,6 @@
 # FastPortScan — 极速端口扫描
 
-参考 2006 年 `ScanPort V1.2`（`reference/端口扫描.exe`）逆向还原的扫描内核，用 C++/Win32 重写的多线程快速端口扫描器。单文件源码，静态链接，无运行库依赖。
+参考 2006 年 `ScanPort V1.2`（`reference/端口扫描.exe`）逆向还原的扫描内核，用 C++/Win32 重写的多线程快速端口扫描器。多文件源码，静态链接，无运行库依赖。
 
 ![logo](assets/logo.png)
 
@@ -15,7 +15,7 @@
 
 ## 使用
 
-运行 `FastPortScan.exe`（x64 静态链接）；`logo.png` 与 exe 同目录时作为程序图标。
+运行 `FastPortScan.exe`（x64 静态链接）；`logo.ico` 与 exe 同目录（或 exe 旁的 `assets\logo.ico`）时作为程序图标。
 
 ## 编译
 
@@ -27,11 +27,13 @@ bash build.sh
 
 ```
 python -m ziglang c++ -target x86_64-windows-gnu -O2 -municode -static \
-    -Wl,--subsystem,windows src/FastPortScan.cpp -o FastPortScan.exe \
-    -lws2_32 -lcomctl32 -liphlpapi -lgdi32 -lshell32 -lgdiplus
+    -Wl,--subsystem,windows \
+    src/main.cpp src/common.cpp src/scan.cpp src/config.cpp src/about.cpp \
+    -o FastPortScan.exe \
+    -lws2_32 -lcomctl32 -liphlpapi -lgdi32 -lshell32
 ```
 
-MSVC：`cl /O2 /DUNICODE /D_UNICODE src\FastPortScan.cpp ws2_32.lib comctl32.lib iphlpapi.lib gdi32.lib shell32.lib gdiplus.lib`
+MSVC：`cl /O2 /DUNICODE /D_UNICODE src\*.cpp ws2_32.lib comctl32.lib iphlpapi.lib gdi32.lib shell32.lib`
 
 ## CI
 
@@ -40,8 +42,8 @@ MSVC：`cl /O2 /DUNICODE /D_UNICODE src\FastPortScan.cpp ws2_32.lib comctl32.lib
 ## 目录结构
 
 ```
-├── src/FastPortScan.cpp      全部源码（单文件）
-├── assets/logo.png           程序图标素材
+├── src/                      源码（main / common / scan / config / about）
+├── assets/logo.png|.ico      程序图标素材
 ├── reference/端口扫描.exe    逆向参考原型（2006）
 ├── unpack/                   壳分析与脱壳脚本（NRV2B 解压器等）
 ├── build.sh                  编译脚本
