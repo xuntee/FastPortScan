@@ -1,0 +1,38 @@
+name: Build & Release
+
+# 推送 tag（如 v1.0.0）时自动编译 Windows x64 并创建 Release 附上 exe
+on:
+  push:
+    tags: [ "v*" ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: mlugg/setup-zig@v1
+        with:
+          version: 0.13.0
+
+      - name: Build
+        shell: bash
+        run: |
+          zig c++ -target x86_64-windows-gnu -O2 -municode -static \
+              -Wl,--subsystem,windows src/FastPortScan.cpp -o FastPortScan.exe \
+              -lws2_32 -lcomctl32 -liphlpapi -lgdi32 -lshell32 -lgdiplus
+
+      - name: Package
+        shell: bash
+        run: |
+          mkdir -p dist
+          cp FastPortScan.exe assets/logo.png dist/
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/FastPortScan.exe
+          generate_release_notes: true

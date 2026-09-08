@@ -1,0 +1,19 @@
+# 构建产物
+*.exe
+*.pdb
+*.ini
+*.log
+!reference/*.exe
+
+# IDA 数据库（分析用，可重建）
+*.i64
+*.id0
+*.id1
+*.id2
+*.nam
+*.til
+
+# 中间产物
+unpack/decompressed*.bin
+__pycache__/
+/logo.png
