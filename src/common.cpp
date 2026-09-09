@@ -53,25 +53,9 @@ HWND MkChild(HWND parent, const wchar_t* cls, const wchar_t* text,
     return c;
 }
 
-// exe 目录下的 assets/logo.ico（多尺寸；兼容根目录 logo.ico）
-bool IconPath(wchar_t* path, DWORD cch)
-{
-    wchar_t dir[MAX_PATH + 16];
-    GetModuleFileNameW(NULL, dir, MAX_PATH);
-    wchar_t* slash = wcsrchr(dir, L'\\');
-    if (slash) *(slash + 1) = 0; else dir[0] = 0;
-    const wchar_t* names[] = { L"logo.ico", L"assets\\logo.ico" };
-    for (int i = 0; i < 2; ++i)
-    {
-        _snwprintf(path, cch, L"%s%s", dir, names[i]);
-        if (GetFileAttributesW(path) != INVALID_FILE_ATTRIBUTES) return true;
-    }
-    return false;
-}
-
+// 内嵌资源图标（assets/app.rc 编译进 exe 的 RT_GROUP_ICON，ID=1，多尺寸）
 HICON LoadAppIcon(int side)
 {
-    wchar_t path[MAX_PATH * 2];
-    if (!IconPath(path, MAX_PATH * 2)) return NULL;
-    return (HICON)LoadImageW(NULL, path, IMAGE_ICON, side, side, LR_LOADFROMFILE);
+    return (HICON)LoadImageW(GetModuleHandleW(NULL), MAKEINTRESOURCEW(1),
+                             IMAGE_ICON, side, side, LR_DEFAULTCOLOR);
 }

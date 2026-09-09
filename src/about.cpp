@@ -69,16 +69,12 @@ void ShowAbout(HWND hOwner)
                              WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU,
                              wx, wy, ww, wh, hOwner, NULL, wc.hInstance, NULL);
 
-    // logo（64px）
-    wchar_t logoPath[MAX_PATH * 2];
-    if (IconPath(logoPath, MAX_PATH * 2))
+    // logo（64px，内嵌资源）
+    HICON h64 = LoadAppIcon(64);
+    if (h64)
     {
-        HICON h64 = (HICON)LoadImageW(NULL, logoPath, IMAGE_ICON, 64, 64, LR_LOADFROMFILE);
-        if (h64)
-        {
-            HWND hIcon = MkChild(h, L"STATIC", L"", SS_ICON, 0, ww/2-32, 16, 64, 64, 1);
-            SendMessageW(hIcon, STM_SETICON, (WPARAM)h64, 0);
-        }
+        HWND hIcon = MkChild(h, L"STATIC", L"", SS_ICON, 0, ww/2-32, 16, 64, 64, 1);
+        SendMessageW(hIcon, STM_SETICON, (WPARAM)h64, 0);
     }
 
     // 标题 + 版本

@@ -17,3 +17,4 @@
 unpack/decompressed*.bin
 __pycache__/
 /logo.png
+*.res

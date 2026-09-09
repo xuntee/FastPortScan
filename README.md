@@ -15,7 +15,7 @@
 
 ## 使用
 
-运行 `FastPortScan.exe`（x64 静态链接）；`logo.ico` 与 exe 同目录（或 exe 旁的 `assets\logo.ico`）时作为程序图标。
+运行 `FastPortScan.exe`（x64 静态链接）。程序图标与版本信息已作为资源嵌入 exe，无需附带任何外部文件。
 
 ## 编译
 
@@ -23,17 +23,18 @@
 bash build.sh
 ```
 
-核心命令（用 pip 包 ziglang 自带的 zig c++，免装 VS/MinGW）：
+核心命令（用 pip 包 ziglang 自带的 zig c++，免装 VS/MinGW；图标经 `zig rc` 编译为资源嵌入，需 zig ≥ 0.14）：
 
 ```
+python -m ziglang rc -c 65001 assets/app.rc app.res
 python -m ziglang c++ -target x86_64-windows-gnu -O2 -municode -static \
     -Wl,--subsystem,windows \
     src/main.cpp src/common.cpp src/scan.cpp src/config.cpp src/about.cpp \
-    -o FastPortScan.exe \
+    app.res -o FastPortScan.exe \
     -lws2_32 -lcomctl32 -liphlpapi -lgdi32 -lshell32
 ```
 
-MSVC：`cl /O2 /DUNICODE /D_UNICODE src\*.cpp ws2_32.lib comctl32.lib iphlpapi.lib gdi32.lib shell32.lib`
+MSVC：`rc /c 65001 assets\app.rc` 后将 `app.res` 与 `src\*.cpp` 一并 `cl` 链接。
 
 ## CI
 
@@ -43,6 +44,7 @@ MSVC：`cl /O2 /DUNICODE /D_UNICODE src\*.cpp ws2_32.lib comctl32.lib iphlpapi.l
 
 ```
 ├── src/                      源码（main / common / scan / config / about）
+├── assets/app.rc             资源脚本（图标 + 版本信息，编译时嵌入 exe）
 ├── assets/logo.png|.ico      程序图标素材
 ├── reference/端口扫描.exe    逆向参考原型（2006）
 ├── unpack/                   壳分析与脱壳脚本（NRV2B 解压器等）

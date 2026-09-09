@@ -1,0 +1,29 @@
+// FastPortScan 资源：程序图标 + 版本信息
+// 编译：python -m ziglang rc assets/app.rc -fo app.res（build.sh 自动调用）
+
+1 ICON "logo.ico"
+
+1 VERSIONINFO
+FILEVERSION     1,0,0,0
+PRODUCTVERSION  1,0,0,0
+FILEOS          0x40004L
+FILETYPE        0x1L
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "080404B0"
+    BEGIN
+      VALUE "FileDescription",  "FastPortScan - 极速端口扫描"
+      VALUE "ProductName",      "FastPortScan"
+      VALUE "FileVersion",      "1.0.0"
+      VALUE "ProductVersion",   "1.0.0"
+      VALUE "OriginalFilename", "FastPortScan.exe"
+      VALUE "LegalCopyright",   "xuntee"
+      VALUE "Repository",       "https://github.com/xuntee/FastPortScan"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x0804, 1200
+  END
+END

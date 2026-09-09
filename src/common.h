@@ -74,8 +74,7 @@ void   CopyTextToClipboard(HWND hOwner, const wchar_t* text);
 HWND   MkChild(HWND parent, const wchar_t* cls, const wchar_t* text,
                DWORD style, DWORD ex, int x, int y, int w, int h, int id);
 
-// 图标（assets/logo.ico，多尺寸）
-bool   IconPath(wchar_t* path, DWORD cch);
+// 图标（内嵌资源：assets/app.rc → RT_GROUP_ICON ID=1，多尺寸）
 HICON  LoadAppIcon(int side);
 
 // ---------------------------------------------------------------------------
