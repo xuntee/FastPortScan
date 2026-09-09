@@ -1,6 +1,6 @@
 # FastPortScan — 极速端口扫描
 
-参考 2006 年 `ScanPort V1.2`（`reference/端口扫描.exe`）逆向还原的扫描内核，用 C++/Win32 重写的多线程快速端口扫描器。多文件源码，静态链接，无运行库依赖。
+FastPortScan（极速端口扫描）是一个用 C++/Win32 编写的多线程快速 TCP 端口扫描器。静态链接，单文件即可运行，无运行库依赖。
 
 ![logo](assets/logo.png)
 
@@ -46,13 +46,11 @@ MSVC：`rc /c 65001 assets\app.rc` 后将 `app.res` 与 `src\*.cpp` 一并 `cl` 
 ├── src/                      源码（main / common / scan / config / about）
 ├── assets/app.rc             资源脚本（图标 + 版本信息，编译时嵌入 exe）
 ├── assets/logo.png|.ico      程序图标素材
-├── reference/端口扫描.exe    逆向参考原型（2006）
-├── unpack/                   壳分析与脱壳脚本（NRV2B 解压器等）
 ├── build.sh                  编译脚本
 └── .github/workflows/        tag 自动构建 Release
 ```
 
-## 扫描内核（逆向自原型，实测 /24 网段 3072 项约 13 秒）
+## 扫描内核（实测 /24 网段 3072 项约 13 秒）
 
 ```
 工作线程 × N（低于正常优先级）：
@@ -62,11 +60,3 @@ MSVC：`rc /c 65001 assets\app.rc` 后将 `app.res` 与 `src\*.cpp` 一并 `cl` 
     closesocket；开放则结果框追加 "%d.%d.%d.%d: %d"
     InterlockedIncrement 计数 → 进度条 / ETA
 ```
-
-## 逆向记录
-
-原型为 UPX 变种壳（段名 BAO0/BAO1）。`unpack/unpack_nrv2b.py` 用 Python 精确模拟
-壳入口的 NRV2B 解压 stub（位缓冲重填语义 + E8/E9 call-filter 还原）得到原始代码；
-原始 OEP 0x402291，导入表含 ws2_32 按序号导入的 11 个 winsock 函数。关键函数：
-WinMain 0x4014F0、DialogProc 0x401DD0、扫描线程 0x401930、工作线程 0x401630、
-单端口探测 0x401770。
