@@ -23,7 +23,7 @@ FastPortScan（极速端口扫描）是一个用 C++/Win32 编写的多线程快
 bash build.sh
 ```
 
-核心命令（用 pip 包 ziglang 自带的 zig c++，免装 VS/MinGW；图标经 `zig rc` 编译为资源嵌入，需 zig ≥ 0.14）：
+核心命令（CI 用 MSVC 编译，误报率更低；本地无 VS 时可用 pip 包 ziglang）：
 
 ```
 python -m ziglang rc -c 65001 assets/app.rc app.res
@@ -34,7 +34,8 @@ python -m ziglang c++ -target x86_64-windows-gnu -O2 -municode -static \
     -lws2_32 -lcomctl32 -liphlpapi -lgdi32 -lshell32
 ```
 
-MSVC：`rc /c 65001 assets\app.rc` 后将 `app.res` 与 `src\*.cpp` 一并 `cl` 链接。
+MSVC（与 CI 相同）：`rc /c 65001 /fo app.res assets\app.rc` 后
+`cl /O2 /EHsc /MT /DUNICODE /D_UNICODE src\*.cpp app.res /link /SUBSYSTEM:WINDOWS /ENTRY:wWinMainCRTStartup /MANIFEST:EMBED user32.lib gdi32.lib shell32.lib ws2_32.lib comctl32.lib iphlpapi.lib advapi32.lib`
 
 ## CI
 

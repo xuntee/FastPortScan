@@ -1,6 +1,7 @@
 name: Build & Release
 
-# 推送 tag（如 v1.0.0）时自动编译 Windows x64 并创建 Release 附上 zip
+# 推送 tag（如 v1.0.1）时自动编译 Windows x64 并创建 Release 附上 zip
+# 用 MSVC 编译（杀软对 MSVC 二进制的误报率远低于 zig/mingw 静态链接）
 on:
   push:
     tags: [ "v*" ]
@@ -14,16 +15,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: ilammy/msvc-dev-cmd@v1
+
       - name: Build
-        shell: bash
+        shell: cmd
         run: |
-          python -m pip install ziglang
-          python -m ziglang rc -c 65001 assets/app.rc app.res
-          python -m ziglang c++ -target x86_64-windows-gnu -O2 -municode -static \
-              -Wl,--subsystem,windows \
-              src/main.cpp src/common.cpp src/scan.cpp src/config.cpp src/about.cpp \
-              app.res -o FastPortScan.exe \
-              -lws2_32 -lcomctl32 -liphlpapi -lgdi32 -lshell32
+          rc /nologo /c 65001 /fo app.res assets\app.rc
+          cl /nologo /O2 /EHsc /MT /DUNICODE /D_UNICODE ^
+             src\main.cpp src\common.cpp src\scan.cpp src\config.cpp src\about.cpp ^
+             app.res ^
+             /Fe:FastPortScan.exe ^
+             /link /SUBSYSTEM:WINDOWS /ENTRY:wWinMainCRTStartup ^
+             /MANIFEST:EMBED ^
+             user32.lib gdi32.lib shell32.lib ws2_32.lib comctl32.lib iphlpapi.lib advapi32.lib
 
       - name: Package
         shell: pwsh

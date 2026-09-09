@@ -81,7 +81,7 @@ void ShowAbout(HWND hOwner)
     HWND hTitle = MkChild(h, L"STATIC", L"FastPortScan 极速端口扫描", SS_CENTER, 0,
                           10, 90, ww-20, 24, 3);
     SendMessageW(hTitle, WM_SETFONT, (WPARAM)g_hFontBold, TRUE);
-    MkChild(h, L"STATIC", L"v1.0  ·  多线程 TCP 快速端口扫描器", SS_CENTER, 0,
+    MkChild(h, L"STATIC", L"v1.0.1  ·  多线程 TCP 快速端口扫描器", SS_CENTER, 0,
             10, 118, ww-20, 18, 4);
 
     // 开发者信息
