@@ -72,6 +72,19 @@ struct Scanner {
 static Scanner          g_scan;
 static CRITICAL_SECTION g_scanCS;       // 任务迭代互斥
 static CRITICAL_SECTION g_resultCS;     // 结果追加互斥
+static INIT_ONCE        g_csOnce = INIT_ONCE_STATIC_INIT;
+
+static BOOL CALLBACK InitCS(PINIT_ONCE, PVOID, PVOID*)
+{
+    InitializeCriticalSection(&g_scanCS);
+    InitializeCriticalSection(&g_resultCS);
+    return TRUE;
+}
+static void EnsureCS()                  // 必须在任何 EnterCriticalSection 之前
+{
+    PVOID ctx;
+    InitOnceExecuteOnce(&g_csOnce, InitCS, NULL, NULL);
+}
 static volatile LONG    g_running = 0;  // 扫描运行标志
 static volatile LONG    g_done = 0;     // 已完成任务
 static volatile LONG    g_openCnt = 0;  // 开放端口计数
@@ -239,6 +252,7 @@ static DWORD WINAPI ScanMain(LPVOID)
 // ---------------------------------------------------------------------------
 bool ScanStart(HWND hDlg)
 {
+    EnsureCS();
     DWORD sip, eip;
     if (SendDlgItemMessageW(hDlg, IDC_IP_START, IPM_GETADDRESS, 0, (LPARAM)&sip) != 4 ||
         SendDlgItemMessageW(hDlg, IDC_IP_END,   IPM_GETADDRESS, 0, (LPARAM)&eip) != 4)

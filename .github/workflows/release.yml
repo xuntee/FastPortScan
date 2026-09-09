@@ -1,7 +1,8 @@
 name: Build & Release
 
-# 推送 tag（如 v1.0.1）时自动编译 Windows x64 并创建 Release 附上 zip
+# 推送 tag（如 v1.0.3）时自动编译 Windows x64 并创建 Release
 # 用 MSVC 编译（杀软对 MSVC 二进制的误报率远低于 zig/mingw 静态链接）
+# 注意：每次发版前更新下面 body 里的修复说明
 on:
   push:
     tags: [ "v*" ]
@@ -35,9 +36,26 @@ jobs:
           New-Item -ItemType Directory dist | Out-Null
           Compress-Archive -Path FastPortScan.exe `
             -DestinationPath "dist/FastPortScan-$($env:GITHUB_REF_NAME)-x64.zip"
+          Copy-Item FastPortScan.exe "dist/FastPortScan-$($env:GITHUB_REF_NAME)-x64.exe"
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/*.zip
-          generate_release_notes: true
+          files: |
+            dist/*.zip
+            dist/*.exe
+          body: |
+            ## FastPortScan v1.0.3
+
+            ### 本版修复
+            - **修复点击"开始扫描"后程序必然崩溃退出的问题**（任意线程数：10/20/100/200 均复现；原因为临界区未初始化，多文件重构时遗漏）
+            - 主窗口加高：状态栏（进度 / 已完成 / 开放数 / 已用时间 / 预计剩余 / 总耗时）此前被裁剪不可见，现已完整显示
+            - 关于窗口：文字不再带背景色块
+            - 关于窗口：点"确定"只关闭关于窗口，不再退出整个程序
+            - 默认线程数改为 200（无 ini 配置时）
+            - README 添加程序截图
+
+            ### 使用
+            下载 zip 解压或直接下载 exe 运行（x64，静态链接，单文件免安装）。
+            程序图标/版本信息已内嵌，无需附带其他文件。
+            本版起 MSVC 编译并带 /utf-8，界面中文正常。

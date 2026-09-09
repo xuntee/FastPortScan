@@ -19,6 +19,34 @@ HFONT     g_hFontBold = NULL;
 HICON     g_hLogo64   = NULL;
 ULONGLONG g_tickStart = 0;
 
+// 崩溃现场记录（exe 同目录 FastPortScan-crash.log），用于定位偶发崩溃
+static LONG WINAPI CrashFilter(EXCEPTION_POINTERS* ep)
+{
+    HANDLE h = CreateFileW(L"FastPortScan-crash.log",
+                           FILE_APPEND_DATA | SYNCHRONIZE, FILE_SHARE_READ, NULL,
+                           OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+    if (h != INVALID_HANDLE_VALUE)
+    {
+        HMODULE mod = NULL;
+        wchar_t modName[MAX_PATH] = L"(unknown)";
+        GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS |
+                           GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                           (LPCWSTR)ep->ExceptionRecord->ExceptionAddress, &mod);
+        GetModuleFileNameW(mod, modName, MAX_PATH);
+        wchar_t buf[700];
+        _snwprintf(buf, 700, L"time=%I64u code=0x%08X addr=%p thread=%u module=%s\r\n",
+                   (unsigned long long)GetTickCount64(),
+                   ep->ExceptionRecord->ExceptionCode,
+                   ep->ExceptionRecord->ExceptionAddress,
+                   GetCurrentThreadId(), modName);
+        DWORD written = 0;
+        WriteFile(h, buf, (DWORD)wcslen(buf) * sizeof(wchar_t), &written, NULL);
+        CloseHandle(h);
+    }
+    return EXCEPTION_CONTINUE_SEARCH;
+}
+void InstallCrashLogger() { SetUnhandledExceptionFilter(CrashFilter); }
+
 // 毫秒 → "时:分:秒"
 void FormatHMS(ULONGLONG ms, wchar_t* buf, size_t cch)
 {

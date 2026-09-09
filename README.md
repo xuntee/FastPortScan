@@ -4,6 +4,12 @@ FastPortScan（极速端口扫描）是一个用 C++/Win32 编写的多线程快
 
 ![logo](assets/logo.png)
 
+## 截图
+
+![主界面](assets/screenshot-main.png)
+
+![关于](assets/screenshot-about.png)
+
 ## 功能
 
 - **TCP 连接扫描**：非阻塞 connect + select 毫秒级超时 + 多线程（1-200，默认 10，低于正常优先级）

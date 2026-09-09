@@ -185,6 +185,8 @@ static LRESULT CALLBACK MainProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp)
 // ---------------------------------------------------------------------------
 int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, int nCmdShow)
 {
+    InstallCrashLogger();
+
     INITCOMMONCONTROLSEX icc = { sizeof(icc), ICC_INTERNET_CLASSES | ICC_PROGRESS_CLASS |
                                           ICC_STANDARD_CLASSES };
     InitCommonControlsEx(&icc);
@@ -207,7 +209,7 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, int nCmdShow)
     RegisterClassW(&wc);
 
     RECT wa; SystemParametersInfoW(SPI_GETWORKAREA, 0, &wa, 0);
-    int ww = 660, wh = 424;
+    int ww = 660, wh = 448;     // 424 时状态栏 y=388 被客户区截掉，加高露出进度+状态两行
     int wx = wa.left + ((wa.right - wa.left) - ww) / 2;
     int wy = wa.top + ((wa.bottom - wa.top) - wh) / 2;
 
@@ -266,7 +268,7 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE, LPWSTR, int nCmdShow)
     SendDlgItemMessageW(mainWnd, IDC_IP_END,   IPM_SETADDRESS, 0, 0xC0A801FE);  // 192.168.1.254
     SetDlgItemTextW(mainWnd, IDC_ED_PORTS, K_DEF_PORTS);
     SetDlgItemInt(mainWnd, IDC_ED_TIMEOUT, 200, FALSE);
-    SetDlgItemInt(mainWnd, IDC_ED_THREADS, 10, FALSE);
+    SetDlgItemInt(mainWnd, IDC_ED_THREADS, 200, FALSE);
     EnumAdapters(hCombo);
     if ((int)SendMessageW(hCombo, CB_GETCOUNT, 0, 0) > 0)
         SendMessageW(hCombo, CB_SETCURSEL, 0, 0);

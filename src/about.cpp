@@ -43,8 +43,7 @@ static LRESULT CALLBACK AboutProc(HWND h, UINT msg, WPARAM wp, LPARAM lp)
         }
         break;
     case WM_DESTROY:
-        g_aboutClosed = true;
-        PostQuitMessage(0);
+        g_aboutClosed = true;       // 仅退出关于窗口的模态循环；不投 WM_QUIT（会连带退出主程序）
         return 0;
     }
     return DefWindowProcW(h, msg, wp, lp);
@@ -55,7 +54,9 @@ void ShowAbout(HWND hOwner)
     WNDCLASSW wc = { 0 };
     wc.lpfnWndProc = AboutProc;
     wc.hInstance = GetModuleHandleW(NULL);
-    wc.hbrBackground = g_hAboutBg = (HBRUSH)(COLOR_WINDOW + 1);
+    // 真实画刷（窗口背景与静态文字背景同源，避免文字出现色块）
+    if (!g_hAboutBg) g_hAboutBg = CreateSolidBrush(GetSysColor(COLOR_WINDOW));
+    wc.hbrBackground = g_hAboutBg;
     wc.lpszClassName = L"FastPortScanAbout";
     RegisterClassW(&wc);
 
@@ -81,7 +82,7 @@ void ShowAbout(HWND hOwner)
     HWND hTitle = MkChild(h, L"STATIC", L"FastPortScan 极速端口扫描", SS_CENTER, 0,
                           10, 90, ww-20, 24, 3);
     SendMessageW(hTitle, WM_SETFONT, (WPARAM)g_hFontBold, TRUE);
-    MkChild(h, L"STATIC", L"v1.0.2  ·  多线程 TCP 快速端口扫描器", SS_CENTER, 0,
+    MkChild(h, L"STATIC", L"v1.0.3  ·  多线程 TCP 快速端口扫描器", SS_CENTER, 0,
             10, 118, ww-20, 18, 4);
 
     // 开发者信息
@@ -89,7 +90,7 @@ void ShowAbout(HWND hOwner)
             10, 154, ww-20, 18, 0);
     MkChild(h, L"STATIC", L"开发工具： ZCode · 智谱 GLM", SS_CENTER, 0,
             10, 176, ww-20, 18, 0);
-    MkChild(h, L"STATIC", L"支持国产优质团队", SS_CENTER, 0,
+    MkChild(h, L"STATIC", L"支持国产大模型", SS_CENTER, 0,
             10, 198, ww-20, 18, 0);
 
     // 仓库地址（可点击）

@@ -71,6 +71,7 @@ extern ULONGLONG g_tickStart;       // 本次扫描开始时刻
 // 小工具
 void   FormatHMS(ULONGLONG ms, wchar_t* buf, size_t cch);        // 毫秒 → "时:分:秒"
 void   CopyTextToClipboard(HWND hOwner, const wchar_t* text);
+void   InstallCrashLogger();   // 崩溃现场写入 exe 旁 FastPortScan-crash.log
 HWND   MkChild(HWND parent, const wchar_t* cls, const wchar_t* text,
                DWORD style, DWORD ex, int x, int y, int w, int h, int id);
 
