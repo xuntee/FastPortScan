@@ -64,7 +64,7 @@ MSVC（与 CI 相同）：`rc /c 65001 /fo app.res assets\app.rc` 后
     临界区内领取下一个 IP:端口（顺序遍历 [起始IP..结束IP] × 端口区间）
     socket(AF_INET, SOCK_STREAM, 0) + ioctlsocket(FIONBIO) 非阻塞
     connect() == 0 → 开放；WSAEWOULDBLOCK → select() 写集合按毫秒超时判定
-    closesocket；开放则结果框追加 "%d.%d.%d.%d: %d"
+    closesocket；开放则结果框追加 "%d.%d.%d.%d:%d"
     InterlockedIncrement 计数 → 进度条 / ETA
 ```
 

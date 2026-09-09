@@ -176,7 +176,7 @@ static DWORD WINAPI ScanWorker(LPVOID)
         if (TestPort(ip, port, g_timeoutMs))
         {
             wchar_t line[64];
-            _snwprintf(line, 64, L"%u.%u.%u.%u: %u\r\n",
+            _snwprintf(line, 64, L"%u.%u.%u.%u:%u\r\n",
                        (ip >> 24) & 255, (ip >> 16) & 255, (ip >> 8) & 255, ip & 255, port);
             AppendResult(hResult, line);
             InterlockedIncrement(&g_openCnt);
