@@ -35,7 +35,7 @@ python -m ziglang c++ -target x86_64-windows-gnu -O2 -municode -static \
 ```
 
 MSVC（与 CI 相同）：`rc /c 65001 /fo app.res assets\app.rc` 后
-`cl /O2 /EHsc /MT /DUNICODE /D_UNICODE src\*.cpp app.res /link /SUBSYSTEM:WINDOWS /ENTRY:wWinMainCRTStartup /MANIFEST:EMBED user32.lib gdi32.lib shell32.lib ws2_32.lib comctl32.lib iphlpapi.lib advapi32.lib`
+`cl /O2 /EHsc /MT /utf-8 /DUNICODE /D_UNICODE src\*.cpp app.res /link /SUBSYSTEM:WINDOWS /ENTRY:wWinMainCRTStartup /MANIFEST:EMBED user32.lib gdi32.lib shell32.lib ws2_32.lib comctl32.lib iphlpapi.lib advapi32.lib`
 
 ## CI
 

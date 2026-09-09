@@ -4,8 +4,8 @@
 1 ICON "logo.ico"
 
 1 VERSIONINFO
-FILEVERSION     1,0,1,0
-PRODUCTVERSION  1,0,1,0
+FILEVERSION     1,0,2,0
+PRODUCTVERSION  1,0,2,0
 FILEOS          0x40004L
 FILETYPE        0x1L
 BEGIN
@@ -15,8 +15,8 @@ BEGIN
     BEGIN
       VALUE "FileDescription",  "FastPortScan - 极速端口扫描"
       VALUE "ProductName",      "FastPortScan"
-      VALUE "FileVersion",      "1.0.1"
-      VALUE "ProductVersion",   "1.0.1"
+      VALUE "FileVersion",      "1.0.2"
+      VALUE "ProductVersion",   "1.0.2"
       VALUE "OriginalFilename", "FastPortScan.exe"
       VALUE "LegalCopyright",   "xuntee"
       VALUE "Repository",       "https://github.com/xuntee/FastPortScan"

@@ -21,7 +21,7 @@ jobs:
         shell: cmd
         run: |
           rc /nologo /c 65001 /fo app.res assets\app.rc
-          cl /nologo /O2 /EHsc /MT /DUNICODE /D_UNICODE ^
+          cl /nologo /O2 /EHsc /MT /utf-8 /DUNICODE /D_UNICODE ^
              src\main.cpp src\common.cpp src\scan.cpp src\config.cpp src\about.cpp ^
              app.res ^
              /Fe:FastPortScan.exe ^
