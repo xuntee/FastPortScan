@@ -67,3 +67,20 @@ MSVC（与 CI 相同）：`rc /c 65001 /fo app.res assets\app.rc` 后
     closesocket；开放则结果框追加 "%d.%d.%d.%d: %d"
     InterlockedIncrement 计数 → 进度条 / ETA
 ```
+
+## 开发工具与致谢
+
+本项目由 [xuntee](https://github.com/xuntee) 独立完成，全程使用国产 AI 编程工具
+**ZCode**（内置 **智谱 GLM** 大模型）AI 结对开发：原版逆向分析 → C++/Win32 重写 →
+图标与资源打包 → CI 自动发布，一条龙由 AI 辅助完成。
+
+- 智谱开放平台：<https://open.bigmodel.cn>
+
+## 赞助 / 合作
+
+- **寻求赞助与联合宣传**：如果你是智谱 / ZCode / 国产大模型相关团队，看中
+  "AI 独立交付一个完整桌面软件"这个案例，欢迎提
+  [Issue](https://github.com/xuntee/FastPortScan/issues) 聊合作、案例收录或赞助。
+- **请作者喝杯咖啡**：如果这个工具帮到了你，欢迎赞助支持（在此放置你的
+  微信/支付宝收款码或链接）。
+

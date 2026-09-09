@@ -47,6 +47,7 @@
 #define THREADS_MIN     1
 #define THREADS_MAX     200         // 原版上限
 
+#define K_VERSION L"v1.0.4"   // 发版时与 assets/app.rc 的 FileVersion 同步改
 extern const wchar_t K_TITLE[];
 extern const wchar_t K_APP_NAME[];
 extern const wchar_t K_STR_SCAN[];

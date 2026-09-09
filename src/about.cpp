@@ -82,15 +82,16 @@ void ShowAbout(HWND hOwner)
     HWND hTitle = MkChild(h, L"STATIC", L"FastPortScan 极速端口扫描", SS_CENTER, 0,
                           10, 90, ww-20, 24, 3);
     SendMessageW(hTitle, WM_SETFONT, (WPARAM)g_hFontBold, TRUE);
-    MkChild(h, L"STATIC", L"v1.0.3  ·  多线程 TCP 快速端口扫描器", SS_CENTER, 0,
-            10, 118, ww-20, 18, 4);
+    wchar_t ver[64];
+    _snwprintf(ver, 64, L"%s · 多线程 TCP 快速端口扫描器", K_VERSION);
+    MkChild(h, L"STATIC", ver, SS_CENTER, 0, 10, 118, ww-20, 18, 4);
 
     // 开发者信息
-    MkChild(h, L"STATIC", L"开 发 者： xuntee", SS_CENTER, 0,
+    MkChild(h, L"STATIC", L"开 发 者: xuntee", SS_CENTER, 0,
             10, 154, ww-20, 18, 0);
-    MkChild(h, L"STATIC", L"开发工具： ZCode · 智谱 GLM", SS_CENTER, 0,
+    MkChild(h, L"STATIC", L"开发工具: ZCode · 智谱 GLM", SS_CENTER, 0,
             10, 176, ww-20, 18, 0);
-    MkChild(h, L"STATIC", L"支持国产大模型", SS_CENTER, 0,
+    MkChild(h, L"STATIC", L"用 AI 打造 · 支持国产大模型", SS_CENTER, 0,
             10, 198, ww-20, 18, 0);
 
     // 仓库地址（可点击）

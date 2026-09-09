@@ -1,7 +1,7 @@
 // 公共定义与界面小工具
 #include "common.h"
 
-const wchar_t K_TITLE[]       = L"FastPortScan - 极速端口扫描";
+const wchar_t K_TITLE[]       = L"FastPortScan " K_VERSION L" - 极速端口扫描";
 const wchar_t K_APP_NAME[]    = L"FastPortScan";
 const wchar_t K_STR_SCAN[]    = L"开始扫描";
 const wchar_t K_STR_STOP[]    = L"停 止";

@@ -137,9 +137,9 @@ void EnumAdapters(HWND hCombo)
             DWORD mask = prefix ? (0xFFFFFFFFu << (32 - prefix)) : 0;
             AdapterInfo ai;
             ai.ip = ip; ai.net = ip & mask; ai.bcast = ai.net | (~mask);
-            _snwprintf(tmp, 200, L"%s  —  %s/%d",
-                       p->FriendlyName ? p->FriendlyName : L"adapter",
-                       IpToW(ip, a, 24), prefix);
+            _snwprintf(tmp, 200, L"%s/%d  —  %s",
+                       IpToW(ip, a, 24), prefix,
+                       p->FriendlyName ? p->FriendlyName : L"adapter");
             ai.label = tmp;
             int idx = (int)SendMessageW(hCombo, CB_ADDSTRING, 0, (LPARAM)tmp);
             SendMessageW(hCombo, CB_SETITEMDATA, idx, (LPARAM)g_adapters.size());
